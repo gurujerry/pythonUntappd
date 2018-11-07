@@ -86,17 +86,20 @@ class api:
     """
     Untappd API Feed Calls
     """
-    def friend_feed(self, max_id=None, limit=None):
+    def friend_feed(self, min_id=None, max_id=None, limit=None):
         """
         Returns the friends checkin feed
 
         Arguments:
+            min_id = the checkin id of the most recent checkin (optional)
             max_id = checkin id the results will start with (optional)
             limit = number of results to return (optional)
         """
         method = 'checkin/recent'
         auth = self._get_access_token()
         params = {}
+        if min_id:
+            params['min_id'] = min_id
         if max_id:
             params['max_id'] = max_id
         if limit:
@@ -104,18 +107,21 @@ class api:
 
         return self._do_get(method, auth, params)
 
-    def user_feed(self, username, max_id=None, limit=None):
+    def user_feed(self, username, min_id=None, max_id=None, limit=None):
         """
         Returns the checkin feed of a specific user
 
         Arguments:
             username = the username of the user
+            min_id = the checkin id of the most recent checkin (optional)
             max_id = checkin id the results will start with (optional)
             limit = number of results to return (optional)
         """
         method = 'user/checkin/' + username
         auth = self._get_api_auth_token()
         params = {}
+        if min_id:
+            params['min_id'] = min_id
         if max_id:
             params['max_id'] = max_id
         if limit:
@@ -301,19 +307,22 @@ class api:
     """
     Untappd API User Detail Calls
     """
-    def user_badges(self, username, offset=None):
+    def user_badges(self, username, offset=None, limit=None):
         """
         Returns a list of the users badges
 
         Arguments:
             username = the username of the user
             offset = the numeric offset where the results start (optional)
+            limit = number of results to return (optional)
         """
         method = "user/badges/" + username
         auth = self._get_access_token()
         params = {}
         if offset:
             params['offset'] = offset
+        if limit:
+            params['limit'] = limit
 
         return self._do_get(method, auth, params)
 
@@ -336,7 +345,7 @@ class api:
 
         return self._do_get(method, auth, params)
 
-    def user_wishlist(self, username, sort=None, offset=None):
+    def user_wishlist(self, username, sort=None, offset=None, limit=None):
         """
         Returns a list of the users wishlisted beers
 
@@ -344,6 +353,7 @@ class api:
             username = the username of the user
             sort = the value by which to sort the list (optional)
             offset = the numeric offset where the results start (optional)
+            limit = number of results to return (optional)
         """
         method = "user/wishlist/" + username
         auth = self._get_api_auth_token()
@@ -352,10 +362,12 @@ class api:
             params['sort'] = sort
         if offset:
             params['offset'] = offset
+        if limit:
+            params['limit'] = limit
 
         return self._do_get(method, auth, params)
 
-    def user_distinct_beers(self, username, sort=None, offset=None):
+    def user_distinct_beers(self, username, sort=None, offset=None, limit=None):
         """
         Returns a list of the distinct beers a user has had
 
@@ -363,6 +375,7 @@ class api:
             username = the username of a user
             sort = the value by which to sort the list (optional)
             offset = the numeric offset where the results start (optional)
+            limit = number of results to return (optional)
         """
         method = "user/beers/" + username
         auth = self._get_api_auth_token()
@@ -371,34 +384,44 @@ class api:
             params['sort'] = sort
         if offset:
             params['offset'] = offset
+        if limit:
+            params['limit'] = limit
 
         return self._do_get(method, auth, params)
 
     """
     Untappd API Search Calls
     """
-    def brewery_search(self, query):
+    def brewery_search(self, query, offset=None, limit=None):
         """
         Returns the breweries matching a query
 
         Arguments:
             query = the search term to search by
+            offset = the numeric offset where the results start (optional)
+            limit = number of results to return (optional)
         """
         method = "search/brewery"
         auth = self._get_api_auth_token()
         params = {
             "q": query
         }
+        if offset:
+            params['offset'] = offset
+        if limit:
+            params['limit'] = limit
 
         return self._do_get(method, auth, params)
 
-    def beer_search(self, query, sort=None):
+    def beer_search(self, query, sort=None, offset=None, limit=None):
         """
         Returns the beer matching a query
 
         Arguments:
             query = the search term to search by
             sort = the value by which to sort the list (optional)
+            offset = the numeric offset where the results start (optional)
+            limit = number of results to return (optional)
         """
         method = "search/beer"
         auth = self._get_api_auth_token()
@@ -407,6 +430,10 @@ class api:
         }
         if sort:
             params['sort'] = sort
+        if offset:
+            params['offset'] = offset
+        if limit:
+            params['limit'] = limit
         return self._do_get(method, auth, params)
 
     def beer_trending(self):
@@ -597,14 +624,23 @@ class api:
     """
     Untappd API Misc Calls
     """
-    def notifications(self):
+    def notifications(self, offset=None, limit=None):
         """
         Returns a list of notifications for a user
+        
+        Arguments:
+            offset = the numeric offset where the results start (optional)
+            limit = number of results to return (optional)
         """
         method = "notifications"
         auth = self._get_access_token()
+        params = {}
+        if offset:
+            params['offset'] = offset
+        if limit:
+            params['limit'] = limit
 
-        return self._do_get(method, auth, {})
+        return self._do_get(method, auth, params)
 
     def foursquare_venue_lookup(self, venue_id):
         """
