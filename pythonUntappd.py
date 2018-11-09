@@ -117,7 +117,7 @@ class api:
             max_id = checkin id the results will start with (optional)
             limit = number of results to return (optional)
         """
-        method = 'user/checkin/' + username
+        method = 'user/checkins/' + username
         auth = self._get_api_auth_token()
         params = {}
         if min_id:
