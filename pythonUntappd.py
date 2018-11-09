@@ -317,7 +317,7 @@ class api:
             limit = number of results to return (optional)
         """
         method = "user/badges/" + username
-        auth = self._get_access_token()
+        auth = self._get_api_auth_token()
         params = {}
         if offset:
             params['offset'] = offset
