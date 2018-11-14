@@ -7,8 +7,12 @@ Author - Mackenzie Marshall <mackenziemarshall.com>
 """
 
 import json
-import urllib
-import urllib2
+try:
+    from urllib import urlencode
+    from urllib2 import urlopen
+except ImportError:
+    from urllib.parse import urlencode
+    from urllib.request import urlopen
 
 
 class api:
@@ -60,11 +64,11 @@ class api:
         url = self.url + method + "?" + auth
 
         if params:
-            params = urllib.urlencode(params)
+            params = urlencode(params)
             url = url + "&" + params
-            response = urllib2.urlopen(url).read()
+            response = urlopen(url).read()
         else:
-            response = urllib2.urlopen(url).read()
+            response = urlopen(url).read()
 
         return json.loads(response)
 
@@ -78,8 +82,8 @@ class api:
             params = Params for the API request
         """
         url = self.url + method + "?" + auth
-        params = urllib.urlencode(params)
-        response = urllib2.urlopen(url, params).read()
+        params = urlencode(params)
+        response = urlopen(url, params).read()
 
         return json.loads(response)
 
